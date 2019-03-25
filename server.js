@@ -7,6 +7,7 @@ var knex = require('knex')
 const register = require('./Controllers/register');
 const signin = require('./Controllers/signin');
 const profile = require('./Controllers/profile');
+const image = require('./Controllers/image');
 
 var db = knex({
     client: 'pg',
@@ -38,31 +39,11 @@ app.use(cors());
 /image --> PUT --> (update) user
 */
 
-app.get('/', (req, res) => {
-    res.send(db.users);
-})
-
+app.get('/', (req, res) => {res.send(db.users);})
 app.post('/signin', signin.handleSignin(db, bcrypt))
-/* app.post('/signin', (req, res) => {signin.handleSignin(req, res, db, bcrypt)}) */
-
 app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt)})
-
-/* app.put('/image', (req, res) => { image.handleImage(req, res, db)}) */
-
 app.get('/profile/:id', (req, res) => {profile.handleProfileGet(req, res, db)}) 
-
-app.put('/image', (req, res) => {
-    
-    const {id} = req.body;
-
-    db('users').where('id', '=', id)
-    .increment('entries', 1)
-    .returning('entries')
-    .then(entries => {
-        res.json(entries[0])
-    })
-    .catch(err => {res.status(400).json('unable to get entries')})
-})
+app.put('/image', (req, res) => {image.handleImage(req, res, db)})
 
 app.listen(3000, () => {
     console.log("App is running in port 3000");
