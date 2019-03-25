@@ -11,7 +11,7 @@ var db = knex({
     client: 'pg',
     connection: {
       host : '127.0.0.1', //local host, which should be replaced actual host
-      user : 'anahome',
+      user : 'ana',
       password : '',
       database : 'face_id_db'
     }
@@ -39,10 +39,11 @@ app.use(cors());
 */
 
 app.get('/', (req, res) => {
-    res.json(database.users);
+    res.send(db.users);
 })
 
-app.post('/signin', (req, res) => {signin.handleSignin(req, res, db, bcrypt)})
+app.post('/signin', signin.handleSignin(db, bcrypt))
+/* app.post('/signin', (req, res) => {signin.handleSignin(req, res, db, bcrypt)}) */
 
 app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt)})
 
