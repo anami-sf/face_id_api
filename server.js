@@ -1,6 +1,7 @@
 const express =require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
+//added bcrypt-nodejs instead of bcrypt
 const cors = require('cors');
 var knex = require('knex')
 
@@ -39,7 +40,7 @@ app.use(cors());
 /image --> PUT --> (update) user
 */
 
-app.get('/', (req, res) => {res.send(db.users);})
+app.get('/', (req, res) => {res.send('It is working!');})
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', (req, res) => {register.handleRegister(req, res, db, bcrypt)})
 app.get('/profile/:id', (req, res) => {profile.handleProfileGet(req, res, db)}) 
